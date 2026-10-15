@@ -22,12 +22,8 @@ Research Experience
 SpecSIA — Source Inference in Federated Learning (Ongoing)
 Exploring source inference in federated learning, including the effect of heterogeneous data distributions and approaches to evaluating the reliability of sample-source attribution.
 
-Add your role, collaborators, links, and a brief description of verified results before publishing.
-
 Technical Interests
 Python, PyTorch, federated learning experiments, and privacy-preserving computation.
 
 Contact
-Please add your preferred public email address and a link to your GitHub profile.
 
-<!-- Replace this page with your verified university affiliation, education, research experience, projects, publications (if any), and CV link. -->
