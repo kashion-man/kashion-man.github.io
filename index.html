@@ -73,8 +73,20 @@
     .news-list { padding: 0; margin: 0; list-style: none; }
     .news-list li { margin: 0; padding: 4px 0; }
     .date { color: #5d7187; font-weight: 650; font-variant-numeric: tabular-nums; white-space: nowrap; }
-    .paper-row { display: flex; gap: 22px; align-items: flex-start; margin-top: 17px; }
-    .figure { display: block; width: 192px; height: 124px; object-fit: cover; border: 1px solid var(--line); background: var(--soft); border-radius: 6px; flex: 0 0 192px; }
+    /* Larger research artwork: preserve source aspect ratio, never crop diagrams. */
+    .paper-row { display: flex; gap: 25px; align-items: flex-start; margin-top: 17px; }
+    .figure-wrap { margin: 0; flex: 0 0 355px; width: 355px; max-width: 100%; }
+    .figure-open { display: block; width: 100%; padding: 0; margin: 0; border: 0; background: transparent; cursor: zoom-in; text-align: left; }
+    .figure { display: block; width: 100%; height: auto; object-fit: contain; border: 1px solid var(--line); background: var(--soft); border-radius: 6px; }
+    .figure-open:hover .figure { border-color: #a7bdd4; box-shadow: 0 3px 18px rgba(38,78,118,.09); }
+    .figure-open:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+    .figure-wrap figcaption { font-size: 12px; color: var(--muted); margin-top: 6px; }
+    .image-dialog { border: 1px solid #dbe4ec; border-radius: 12px; padding: 16px; width: min(96vw, 1400px); max-width: 1400px; max-height: 95vh; box-shadow: 0 26px 85px rgba(17,35,54,.27); background: #fff; color: var(--ink); }
+    .image-dialog::backdrop { background: rgba(15,23,37,.80); }
+    .image-dialog__top { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-bottom: 13px; }
+    .image-dialog__title { margin: 0; font-weight: 700; font-size: 16px; }
+    .image-dialog__close { border: 1px solid #cdd8e2; border-radius: 5px; background: #fff; padding: 5px 12px; font: inherit; cursor: pointer; }
+    .image-dialog__image { display: block; max-width: 100%; max-height: calc(95vh - 100px); width: auto; height: auto; margin: auto; object-fit: contain; }
     .paper-title { font-size: 16px; font-weight: 720; line-height: 1.48; margin: 0 0 7px !important; }
     .authors { color: #4c5869; font-size: 14px; line-height: 1.6; }
     .status { color: #526d8c; font-weight: 600; font-size: 14px; }
@@ -83,15 +95,15 @@
     .entry:last-child { border-bottom: 0; padding-bottom: 0; }
     .entry-name { font-weight: 720; font-size: 15.5px; margin-bottom: 3px !important; }
     .entry-meta { color: var(--muted); font-size: 14px; margin-bottom: 7px !important; }
-    .research-row { display: flex; gap: 18px; align-items: flex-start; }
-    .research-row .figure { width: 154px; height: 101px; flex-basis: 154px; }
     .education-list { list-style: none; padding: 0; margin: 0; }
     .education-list li { padding: 3px 0; }
     .footer { border-top: 1px solid var(--line); padding-top: 18px; margin-top: 48px; color: #949eaa; font-size: 13px; }
-    @media (max-width: 900px) {
+    @media (max-width: 980px) {
       .layout { grid-template-columns: 185px minmax(0, 1fr); gap: 35px; }
       .portrait { width: 162px; height: 162px; }
       .nav { gap: 16px; }
+      .paper-row { display: block; }
+      .figure-wrap { width: min(100%, 560px); margin: 0 0 14px; }
     }
     @media (max-width: 710px) {
       .topbar { position: static; }
@@ -108,14 +120,12 @@
       .contact li { margin: 3px 0; font-size: 13px; }
       .section { scroll-margin-top: 20px; }
       .section h2 { font-size: 23px; }
-      .paper-row, .research-row { gap: 13px; }
-      .paper-row .figure { width: 143px; height: 105px; flex-basis: 143px; }
-      .research-row .figure { width: 120px; height: 86px; flex-basis: 120px; }
+      .paper-row { display: block; }
+      .figure-wrap { width: 100%; max-width: 560px; }
     }
     @media (max-width: 460px) {
-      .paper-row, .research-row { display: block; }
-      .paper-row .figure { width: 100%; max-width: 280px; height: 146px; margin-bottom: 13px; }
-      .research-row .figure { width: 100%; max-width: 240px; height: 120px; margin-bottom: 12px; }
+      .image-dialog { padding: 10px; }
+      .image-dialog__title { font-size: 13px; }
     }
     @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
   </style>
@@ -160,7 +170,7 @@
         <h2>🔥 News</h2>
         <ul class="news-list">
           <li><span class="date">2026:</span> The <strong>SpecSIA</strong> manuscript was submitted to <strong>ICLR 2027</strong>.</li>
-          <li><span class="date">2026:</span> Contributed to <strong>RealTrace</strong>, a generated-image detection research project.</li>
+
           <li><span class="date">2024.09:</span> Began undergraduate studies at Wuhan University.</li>
         </ul>
       </section>
@@ -169,8 +179,13 @@
         <h2>📝 Publications &amp; Manuscripts</h2>
         <p class="note">Submitted manuscripts are not listed as accepted publications.</p>
         <article class="paper-row">
-          <!-- Upload your actual figure as images/specsia.png. -->
-          <img class="figure" src="images/specsia.png" alt="SpecSIA paper illustration" onerror="this.onerror=null;this.src='images/specsia-placeholder.svg';">
+          <!-- Upload a high-resolution original as images/specsia.png (suggested >=1600 px wide). -->
+          <figure class="figure-wrap">
+            <button type="button" class="figure-open" data-image-title="SpecSIA paper illustration" aria-label="Enlarge SpecSIA paper illustration">
+              <img class="figure" src="images/specsia.png" alt="SpecSIA paper illustration" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='images/specsia-placeholder.svg';">
+            </button>
+            <figcaption>Click image to view larger</figcaption>
+          </figure>
           <div>
             <p class="paper-title">SpecSIA: Reliable Source Inference in Federated Learning via Adaptive Spectral Filtering</p>
             <p class="authors"><strong>Jiaxin Li</strong>, Wenwen He, ShuKan Liu, Lele Fu, Bin Yang, Wenke Huang, Pong C Yuen, Pablo Arbelaez, Mang Ye.</p>
@@ -185,15 +200,6 @@
           <p class="entry-name">SpecSIA — Reliable Source Inference in Federated Learning</p>
           <p class="entry-meta">2026–Present · Research project</p>
           <p>Investigated passive source inference under an honest-but-curious server model. Designed round-anchored contribution attribution and explored adaptive spectral filtering to distinguish client-specific information from shared model knowledge. Evaluated attack success and stability in non-IID federated learning.</p>
-        </div>
-        <div class="entry">
-          <p class="entry-name">RealTrace — Localized Residual Imaging Artifacts for Generated Image Detection</p>
-          <p class="entry-meta">2026 · Research contributor</p>
-          <div class="research-row">
-            <!-- Upload your actual project illustration as images/realtrace.png. -->
-            <img class="figure" src="images/realtrace.png" alt="RealTrace project illustration" onerror="this.onerror=null;this.src='images/realtrace-placeholder.svg';">
-            <p>Contributed to dataset preparation, preprocessing, and implementation of ablation experiments for a generated-image detection study.</p>
-          </div>
         </div>
       </section>
 
@@ -223,5 +229,35 @@
       <footer class="footer">© 2026 Jiaxin Li · Academic Homepage</footer>
     </main>
   </div>
+  <!-- Native HTML dialog for viewing the full source figure. -->
+  <dialog class="image-dialog" id="image-dialog" aria-label="Enlarged research figure">
+    <div class="image-dialog__top">
+      <p class="image-dialog__title" id="dialog-title"></p>
+      <button type="button" class="image-dialog__close" id="dialog-close" aria-label="Close image">Close ×</button>
+    </div>
+    <img class="image-dialog__image" id="dialog-image" alt="">
+  </dialog>
+  <script>
+    (() => {
+      const dialog = document.getElementById('image-dialog');
+      const enlarged = document.getElementById('dialog-image');
+      const title = document.getElementById('dialog-title');
+      document.querySelectorAll('.figure-open').forEach(button => {
+        button.addEventListener('click', () => {
+          const image = button.querySelector('img');
+          // Current src reflects the fallback SVG if the original is unavailable.
+          enlarged.src = image.currentSrc || image.src;
+          enlarged.alt = image.alt;
+          title.textContent = button.dataset.imageTitle || image.alt;
+          if (typeof dialog.showModal === 'function') dialog.showModal();
+          else window.open(enlarged.src, '_blank', 'noopener');
+        });
+      });
+      document.getElementById('dialog-close').addEventListener('click', () => dialog.close());
+      dialog.addEventListener('click', event => {
+        if (event.target === dialog) dialog.close();
+      });
+    })();
+  </script>
 </body>
 </html>
