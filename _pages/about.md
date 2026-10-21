@@ -1,15 +1,9 @@
-元数据
-layout
-single
-permalink
-/
-title
-About Me
-author_profile
-true
-redirect_from
-/about/
-/about.html
+---
+layout: single
+permalink: /
+title: "About Me"
+author_profile: true
+---
 Jiaxin Li
 I am an undergraduate student interested in privacy-preserving machine learning and applied cryptography, particularly the intersection of federated learning and secure computation.
 
