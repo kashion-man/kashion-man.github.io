@@ -94,3 +94,7 @@ publication_category:
 
 # Site Settings
 teaser                   :  # filename of teaser fallback teaser image placed in /images/ for social media previews
+# Reading Files
+include:
+  - _pages
+  - files
