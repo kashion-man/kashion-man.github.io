@@ -212,13 +212,15 @@
 
       <section class="section" id="projects">
         <h2>Selected Projects</h2>
+        <div class="entry" id="privacy-cloud">
+          <p class="entry-name">Privacy Cloud</p>
+          <p class="entry-meta">Edge–cloud LLM inference and federated learning</p>
+          <p>Built a Qwen3-1.7B system that routes requests on-device, screens sensitive context, and lets users review the exact request before it is sent to a cloud model. The local GPU runtime uses paged KV caching, continuous batching, and CUDA Graphs, with configurable tensor, pipeline, and data parallelism.</p>
+          <p>Implemented encrypted inference prototypes using homomorphic encryption and two-party computation, and evaluated federated LoRA for identifying sensitive spans and judging their relevance to a task. The encrypted path demonstrated two-token generation across two machines on a small test model. Full-model encrypted generation and multi-GPU performance remain under evaluation.</p>
+        </div>
         <div class="entry">
           <p class="entry-name">Differential Privacy: DP-SGD with Opacus</p>
           <p>Built a privacy-preserving income prediction demo using PyTorch and Opacus for DP-SGD training.</p>
-        </div>
-        <div class="entry">
-          <p class="entry-name">LLM Inference Systems (Qwen3 / vLLM)</p>
-          <p>Ran Qwen3-1.7B inference with a lightweight vLLM-style framework and explored model weight loading, KV cache management, and inference optimization.</p>
         </div>
         <div class="entry">
           <p class="entry-name">32-bit x86 Operating System Development</p>
